@@ -52,7 +52,6 @@ function ShoppingListService(BothLists) {
     console.log(removedItem)
     itemsToBuy.splice(itemIndex, 1)
     boughtItems.push(removedItem)
-    console.log(boughtItems)
   };
 
   service.getToBuyItems = function () {
