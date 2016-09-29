@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html ng-app="ShoppingListCheckOff">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Buy it all</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/main.css" rel="stylesheet" />
+  </head>
+  
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1 class="text-uppercase text-center title">Buy it all!</h1>
+        </div>
+      </div> <!-- /.row -->
+      
+      <div class="row lists-container">
+        <div class="col-xxs-12 col-xs-6 col-sm-6 col-md-5 col-md-offset-1" ng-controller="ToBuyShoppingController as buyListCtrl">
+          <div class="to-buy-list">
+            <h2 class="text-center text-uppercase list-title">To buy</h2>
+            
+            <div class="col-xs-8 col-xs-offset-2 text-center placeholder" ng-if="buyListCtrl.itemsCartEmpty()">
+              Everything is bought!
+            </div>
+
+            <ul class="list list-unstyled">
+              <li class="list-item" ng-repeat="item in buyListCtrl.items">
+                <div class="item clearfix">
+                  <span>Buy {{ item.quantity }} {{ item.name}}</span>
+                  <button class="btn bought-btn" ng-click="buyListCtrl.addToList($index)">
+                  <span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;Bought</button>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="col-xxs-12 col-xs-6 col-sm-6 col-md-5" ng-controller="AlreadyBoughtShoppingController as boughtListCtrl">
+          <div class="bought-list">
+            <h2 class="text-center text-uppercase list-title">Already bought</h2>
+
+            <div class="col-xs-8 col-xs-offset-2 text-center placeholder" ng-if="boughtListCtrl.boughtCartEmpty()">
+              Nothing bought yet
+            </div>
+
+            <ul class="list list-unstyled">
+              <li class="list-item" ng-repeat="item in boughtListCtrl.boughtItems">
+                <div class="item clearfix">
+                  <span>Bought {{ item.quantity }} {{ item.name}}</span>
+                </div>
+              </li>
+            </ul>
+
+          </div> <!-- /.bought-list -->
+        </div>
+      </div> <!-- /.row -->
+    </div> <!-- /.container --> 
+    
+    <div id="source">
+      <a href="https://github.com/arun1595/angular-a-first-encounter/tree/master/Assignments/buy-it-all" class="btn source-code-btn"><></a>
+    </div>
+
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/angular-animate.min.js"></script>
+    <script src="scripts/app.js"></script>
+  </body>
+</html>
