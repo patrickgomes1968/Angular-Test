@@ -7,7 +7,7 @@ angular.module('NarrowItDownApp', [])
 .constant('ApiBasePath', 'https://davids-restaurant.herokuapp.com')
 .directive('foundItems', FoundItemsDirective);
 
-function FoundItemsDirective(){
+function FoundItemsDirective() {
   var ddo = {
     templateURL: 'foundItemsTemplate.html',
     scope: {
@@ -16,16 +16,16 @@ function FoundItemsDirective(){
     },
 
     controller: FoundItemsDirectiveController,
-    controllerAs: 'FIDClist',
+    controllerAs: 'Dlist',
     bindToController: true,
     link: FoundItemsDirectiveLink
-  }
-  return ddo
+  };
+  return ddo;
 }
 
 function FoundItemsDirectiveController() {
   var list = this;
-
+  console.log(this)
   list.isEmpty = function() {
     return (list.items == 'undefinded' || list.items.length === 0);
   }
@@ -49,78 +49,65 @@ function FoundItemsDirectiveLink(scope, element, attribute, controller) {
     var messageElement = element.find("span.error");
     messageElement.slideUp(900);
   }
-
 }
 
 NarrowItDownController.$inject = ['MenuSearchService'];
-function NarrowItDownController(MenuCategoriesService) {
+function NarrowItDownController(MenuSearchService) {
   var list = this;
 
   list.itemName = "";
   list.items = [];
 
   list.found = function () {
+    // getMatchedMenuItems returns a promise, so can be .thenED
     MenuSearchService.getMatchedMenuItems(list.itemName)
-      .then(function(response) {
-        list.items = response.items;
-      } )
-    // var promise = MenuSearchService.getMatchedMenuItems(list.itemName);
-    // promise.then(function (response) {
-    //   list.items = response.data;
-    // })
+    .then(function (response) {
+      list.items = response.foundItems;
+      // console.log(list.items)
+     })
     .catch(function (error) {
       console.log(error);
     })
   };
 
   list.removeItem = function(itemIndex) {
-    list.items.splice(itemIndex, 1)
+    list.items.splice(itemIndex, 1);
   }
+};
 
-}
-
-
-MenuSearchService.$inject = ['$http', 'ApiBasePath']
-function MenuSearchService($http, ApiBasePath, $q) {
+MenuSearchService.$inject = ['$http', '$q', 'ApiBasePath'];
+function MenuSearchService($http, $q, ApiBasePath) {
   var service = this;
-  service.foundItems = []
+// MenuSearchService.$inject = ['$http', 'ApiBasePath', '$q'];
+// function MenuSearchService($http, ApiBasePath, $q) {
+//   var service = this;
+  service.foundItems = [];
   service.getMatchedMenuItems = function (searchTerm) {
     // var foundItems = [];
-    // var deferred = $q.defer();
-    // //get all menu items off the bat
-    // var response = $http({
-    //   method: "GET",
-    //   url: (ApiBasePath + "/menu_items.json"),
-    // });
-    // // check for search items
-    // response.success(function(data) {
-    //   for (var i = 0; i < data.menu_items.length; i++) {
-    //     //var descr = data.menu_items[i].description;      
-    //     if (data.menu_items[i].description.toLowerCase().indexOf(searchTerm).toLowerCase() !== -1) {
-    //       foundItems.push(item)
-    //     }
-    //   }
-    $http({
-        method: "GET",
-        url: (ApiServerUrl + "/menu_items.json")
-      })
-      .success(function (data) {
-        var fetchedItems = data.menu_items;
-        var f_items = [];
-          for(var i = 0; i < fetchedItems.length; i++) {
-            var description = fetchedItems[i].description;
-            var position = description.toLowerCase().indexOf(searchTerm.toLowerCase());
-            if ( position !== -1) {
-              f_items.push(fetchedItems[i]);
-            }
-          }
-          console.log(f_items)
+    var deferred = $q.defer();
+    //get all menu items off the bat
+    var response = $http({
+      method: "GET",
+      url: (ApiBasePath + "/menu_items.json"),
+    })
+    // check for search items
+    response.success(function(data) {
+      var allItems = data.menu_items;
+      var f_items = [];
+      for(var i = 0; i < allItems.length; i++) {
+        var description = allItems[i].description;
+        var position = description.toLowerCase().indexOf(searchTerm.toLowerCase());
+        if ( position !== -1) {
+          f_items.push(allItems[i]);
+        }
+      }
+      // console.log(f_items);
       deferred.resolve({
         "foundItems" : f_items
       })
     })
     .error(function(msg, code) {
-        deferred.reject(msg);
+      deferred.reject(msg);
     });
     return deferred.promise;
   };
