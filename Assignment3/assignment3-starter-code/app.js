@@ -8,20 +8,19 @@ angular.module('NarrowItDownApp', [])
 .directive('foundItems', FoundItemsDirective);
 
 function FoundItemsDirective() {
-  var ddo = {
-    templateURL: 'foundItemsTemplate.html',
-    scope: {
-      Items: "<",
-      onRemove: '&'
-    },
-
-    controller: FoundItemsDirectiveController,
-    controllerAs: 'Dlist',
-    bindToController: true,
-    link: FoundItemsDirectiveLink
-  };
-  return ddo;
-}
+    var ddo = {
+      templateUrl: 'foundItemsTemplate.html',
+      scope: {
+        items: '<',
+        onRemove: '&'
+      },
+      controller: FoundItemsDirectiveController,
+      controllerAs: 'Dlist',
+      bindToController: true,
+      link: FoundItemsDirectiveLink
+    };
+    return ddo;
+  }
 
 function FoundItemsDirectiveController() {
   var list = this;
