@@ -22,6 +22,7 @@ function FoundItemsDirective() {
     return ddo;
   }
 
+
 function FoundItemsDirectiveController() {
   var list = this;
   console.log(this)
