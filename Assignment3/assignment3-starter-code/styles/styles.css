@@ -59,5 +59,6 @@ found-items {
 
 .error {
   color: red;
+  font-weight: bold;
   display: none;
 }
