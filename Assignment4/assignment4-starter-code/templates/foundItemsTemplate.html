@@ -1,0 +1,11 @@
+<div>
+<ol>
+  <li ng-repeat="item in Dlist.items">
+    <div>
+      <h3>{{item.name}} <button ng-click="Dlist.onRemove({index: $index});">Don't want this one!</button></h3>
+      <div><b>{{item.short_name}}</b>: {{item.description}}</div>
+    </div>
+  </li>
+</ol>
+<span class="error">Nothing found</span>
+</div>
