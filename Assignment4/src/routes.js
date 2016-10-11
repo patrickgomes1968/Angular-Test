@@ -1,12 +1,11 @@
 (function () {
 'use strict';
 
-angular.module('ShoppingList')
+angular.module('MenuApp')
 .config(RoutesConfig);
 
 RoutesConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
 function RoutesConfig($stateProvider, $urlRouterProvider) {
-
   // Redirect to home page if no other URL matches
   $urlRouterProvider.otherwise('/');
 
@@ -16,27 +15,42 @@ function RoutesConfig($stateProvider, $urlRouterProvider) {
   // Home page
   .state('home', {
     url: '/',
-    templateUrl: 'src/shoppinglist/templates/home.template.html'
+    templateUrl: 'src/menuapp/templates/home.template.html'
   })
 
-  // Premade list page
+  // Categories page
   .state('categories', {
     url: '/categories',
-    templateUrl: 'src/shoppinglist/templates/categories.template.html',
-    controller: 'MainShoppingListController as mainList',
+    templateUrl: 'src/menuapp/templates/main-categories.template.html',
+    controller: 'CategoryListController',
+    controllerAs: 'categoryListCtrl',
     resolve: {
-      items: ['ShoppingListService', function (ShoppingListService) {
-        return ShoppingListService.getItems();
+      Catitems: ['MenuDataService', function (MenuDataService) {
+        return MenuDataService.getAllCategories();
       }]
     }
   })
+  
+  // Item page
+  .state('item', {
+    url: '/item/{categoryShortName}',
+    templateUrl: 'src/menuapp/templates/main-items.template.html',
+    controller: 'ItemsController as itemsCtrl',
+    // controllerAs: 'itemsCtrl',
+    resolve: {
+      items: ['$stateParams', 'MenuDataService',
+            function ($stateParams, MenuDataService) {
+              return MenuDataService.getItemsForCategory($stateParams.categoryShortName);
+            }]
+    }
+  })
 
-  .state('categories.items', {
-    url: '/items/{categoryId}',
-    templateUrl: 'src/shoppinglist/templates/item-detail.template.html',
-    controller: "ItemDetailController as itemDetail"
+  //Added this nested view of item Desccription of my own accord
+  .state('item.itemDescrip', {
+    url: '/item-descrip/{itemId}',
+    templateUrl: 'src/menuapp/templates/item-descrip.template.html',
+    controller: "ItemDescripController as itemDescripCtrl"
   });
-
 }
 
 })();

@@ -1,56 +1,31 @@
-(function () {
-'use strict';
+(function() {
+    'use strict';
 
-angular.module('MenuApp')
-.service('MenuDataService', MenuDataService);
-
-
-MenuDataService.$inject = ['$q', '$http','ApiBasePath'];
-function MenuDataService($q, $http, ApiBasePath) {
-  var service = this;
-
-  var categories = [];
-  var categoryItems = [];
-
-  // Returns a promise, NOT items array directly
-  service.getAllCategories = function () {
-    var deferred = $q.defer();
-    //get all menu items off the bat
-    var response = $http({
-      method: "GET",
-      url: (ApiBasePath + "/categories.json"),
-    })
-
-    response.success(function(data) {
-      var categories = data.categories;
-      deferred.resolve({
-        "foundItems" : categories
-      })
-    })
-    .error(function(msg, code) {
-      deferred.reject(msg);
-    });
-    return deferred.promise;
-  };
-
-  service.getMatchedMenuItems = function (categoryShortName) {
-    var deferred = $q.defer();
-    var response = $http({
-      method: "GET",
-      url: (ApiBasePath + "/menu_items.json?category=" + categoryShortName),
-    })
+    angular.module('data')
     
-    response.success(function(data) {
-      var categoryItems = data.menu_items;
-      deferred.resolve({
-        "foundItems" : categoryItems
-      })
-    })
-    .error(function(msg, code) {
-      deferred.reject(msg);
-    });
-    return deferred.promise;
-  };
-}
+    .service('MenuDataService', MenuDataService);
 
+    MenuDataService.$inject = ['$http'];
+    function MenuDataService($http) {
+        var service = this;
+
+        service.getAllCategories = function() {
+            return $http({
+            method: "GET",
+            url: ("https://davids-restaurant.herokuapp.com/categories.json")
+            }).then(function(result) {
+                return result.data;
+            });
+        };
+
+        service.getItemsForCategory = function(categoryShortName) {
+            return $http({
+            method: "GET",
+            url: ("https://davids-restaurant.herokuapp.com/menu_items.json"),
+            params: {"category": categoryShortName}
+            }).then(function(result) {
+                return result.data.menu_items;
+            });
+        };
+    }
 })();
