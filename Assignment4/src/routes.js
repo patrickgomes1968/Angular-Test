@@ -36,7 +36,6 @@ function RoutesConfig($stateProvider, $urlRouterProvider) {
     url: '/items/{categoryShortName}',
     templateUrl: 'src/menuapp/templates/main-items.template.html',
     controller: 'ItemsController as itemsCtrl',
-    // controllerAs: 'itemsCtrl',
     resolve: {
       items: ['$stateParams', 'MenuDataService',
             function ($stateParams, MenuDataService) {
@@ -53,8 +52,8 @@ function RoutesConfig($stateProvider, $urlRouterProvider) {
     resolve: {
       item: ['$stateParams', 'MenuDataService',
             function ($stateParams, MenuDataService) {
-              // console.log(itemID);
-              return MenuDataService.getItem($stateParams.itemID)
+              console.log($stateParams.itemId);
+              return MenuDataService.getItem($stateParams.itemId);
             }]
     }
   });

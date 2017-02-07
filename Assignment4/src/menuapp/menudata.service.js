@@ -29,12 +29,12 @@
         };
 
         service.getItem = function(itemId) {
-            console.log(itemID)
+            console.log(itemId)
             return $http({
             method: "GET",
             url: ("https://davids-restaurant.herokuapp.com/menu_items/" + itemId +".json")
                  }).then(function(result) {
-                return result.data.menu_item;
+                    return result.data;
             });
         };
     }
