@@ -9,7 +9,7 @@ function CategoryListController(items) {
     var categoriesListCtrl = this;
 
     categoriesListCtrl.catitems = items;
-    console.log("Cat items inside Cat.Controller: " + categoriesListCtrl.catitems)
+    // console.log("Cat items inside Cat.Controller: " + categoriesListCtrl.catitems)
 }
 
 })();

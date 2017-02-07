@@ -22,8 +22,8 @@ function RoutesConfig($stateProvider, $urlRouterProvider) {
   .state('categories', {
     url: '/categories',
     templateUrl: 'src/menuapp/templates/main-categories.template.html',
-    controller: 'CategoryListController',
-    controllerAs: 'categoryListCtrl',
+    controller: 'CategoryListController as categoryListCtrl',
+    // controllerAs: 'categoryListCtrl',
     resolve: {
       Catitems: ['MenuDataService', function (MenuDataService) {
         return MenuDataService.getAllCategories();
@@ -31,9 +31,9 @@ function RoutesConfig($stateProvider, $urlRouterProvider) {
     }
   })
   
-  // Item page
-  .state('item', {
-    url: '/item/{categoryShortName}',
+  // Items page
+  .state('items', {
+    url: '/items/{categoryShortName}',
     templateUrl: 'src/menuapp/templates/main-items.template.html',
     controller: 'ItemsController as itemsCtrl',
     // controllerAs: 'itemsCtrl',
@@ -46,10 +46,17 @@ function RoutesConfig($stateProvider, $urlRouterProvider) {
   })
 
   //Added this nested view of item Desccription of my own accord
-  .state('item.itemDescrip', {
-    url: '/item-descrip/{itemId}',
+  .state('items.itemDescrip', {
+    url: '/item-description/{itemId}',
     templateUrl: 'src/menuapp/templates/item-descrip.template.html',
-    controller: "ItemDescripController as itemDescripCtrl"
+    controller: "ItemDescripController as itemCtrl",
+    resolve: {
+      item: ['$stateParams', 'MenuDataService',
+            function ($stateParams, MenuDataService) {
+              // console.log(itemID);
+              return MenuDataService.getItem($stateParams.itemID)
+            }]
+    }
   });
 }
 

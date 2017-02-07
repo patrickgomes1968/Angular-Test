@@ -1,1 +1,24 @@
-<div>Item description: {{ itemDesrip.description }}</div>
+<div> Inside Item description </div>
+
+<table style="width:60%">
+  <tr>
+    <th>ID</th>
+    <th>Short Name</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Large Portion Name</th>
+    <th>Small Portion Name</th>
+    <th>Price large portion</th>
+    <th>Price Small portion</th>
+  </tr>
+  <tr>
+    <td>{{itemCtrl.item.id}}</td>
+    <td>{{itemCtrl.item.short_name}}</td>
+    <td>{{itemCtrl.item.name}}</td>
+    <td>{{itemCtrl.item.description}}</td>
+    <td>{{itemCtrl.item.large_portion_name}}</td>
+    <td>{{itemCtrl.item.small_portion_name}}</td>
+    <td>{{itemCtrl.item.price_large}}</td>
+    <td>{{itemCtrl.item.price_small}}</td>
+  </tr>
+</table>

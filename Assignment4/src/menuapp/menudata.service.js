@@ -27,5 +27,15 @@
                 return result.data.menu_items;
             });
         };
+
+        service.getItem = function(itemId) {
+            console.log(itemID)
+            return $http({
+            method: "GET",
+            url: ("https://davids-restaurant.herokuapp.com/menu_items/" + itemId +".json")
+                 }).then(function(result) {
+                return result.data.menu_item;
+            });
+        };
     }
 })();
